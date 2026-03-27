@@ -13,4 +13,8 @@ Saída do lexer:
 
 Saída final do projeto:
     arquivo de tokens salvo
+
+
+
+implementar para pegar o texto e mandar por linha para o parser para fazer a lista de tokens
     

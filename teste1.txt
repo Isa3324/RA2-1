@@ -1,11 +1,10 @@
-1. Fornecer o mínimo de 3 arquivos de texto, 
-    cada um com pelo menos 10 linhas de expressões 
-    aritméticas escritas segundo a linguagem definida neste documento.
-2. Cada arquivo deve incluir todas as operações 
-    (+, -, *, /, %, ^) e comandos especiais ((N RES), 
-    (V MEM), (MEM)) em operações aninhadas. 3. Os arquivos 
-    devem estar no mesmo diretório do código-fonte e ser 
-    processados via argumento de linha de comando 
-    (ex.: ./NomeDoSeuPrograma teste1.txt). 
-4. O programa não deve incluir menu ou qualquer seleção 
-    interativa de arquivos.
+(3.14 2.0 +)
+((1.5 2.0 *) (3.0 4.0 *) /)
+(5.0 MEM)
+(2 RES)
+(4.0 5.0 +)
+(10.0 3.0 -)
+(2.0 8.0 /)
+(6.0 7.0 *)
+(9.0 RES)
+(1.0 2.0 +)

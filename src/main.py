@@ -1,6 +1,15 @@
 import sys
 from file_reader import ler_arquivo
 from parser import parseExpressao
+#from executor import executarExpressao
+from assembly_generator import (
+    inicializar_contexto,
+    adicionar_cabecalho,
+    adicionar_rodape,
+    gerarAssembly
+)
+
+
 
 def main():
     # ver se tem um arquivo depois do nome do programa
@@ -19,10 +28,22 @@ def main():
 
     print("Arquivo lido com sucesso!")
     print("Linhas encontradas:")
+    
+    #memoria = {}
+    #resultados = []
+    contexto = inicializar_contexto()
+    codigoAssembly = ""
+    codigoAssembly = adicionar_cabecalho(codigoAssembly)
+    
     for linha in linhas:
-        print(linha)
-        #parseExpressao(linha, tokens)
+        tokens = []
+        #print(linha)
+        tokens = parseExpressao(linha, tokens)
+        #resultados_novos, memoria, resultados = executarExpressao(tokens, memoria, resultados)
+        print(tokens)
+        codigoAssembly = gerarAssembly(tokens, codigoAssembly, contexto)
+    codigoAssembly = adicionar_rodape(codigoAssembly, contexto)    
         
-
+    print(codigoAssembly)
 if __name__ == "__main__":
     main()
