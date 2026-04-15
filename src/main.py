@@ -3,11 +3,11 @@ from file_reader import ler_arquivo
 from parser import parseExpressao
 #from executor import executarExpressao
 from assembly_generator import (
-    inicializar_contexto,
-    adicionar_cabecalho,
-    adicionar_rodape,
-    gerarAssembly
+    inicializar_estado, 
+    gerarAssembly, 
+    montar_codigo_final
 )
+
 
 
 
@@ -26,24 +26,23 @@ def main():
         print("nao tem linhas dentro do arquivo ", nome_arquivo)
         return
 
-    print("Arquivo lido com sucesso!")
-    print("Linhas encontradas:")
+    #print("Arquivo lido com sucesso!")
     
-    #memoria = {}
-    #resultados = []
-    contexto = inicializar_contexto()
-    codigoAssembly = ""
-    codigoAssembly = adicionar_cabecalho(codigoAssembly)
+    codigoAssembly = inicializar_estado()
+    
     
     for linha in linhas:
         tokens = []
-        #print(linha)
         tokens = parseExpressao(linha, tokens)
         #resultados_novos, memoria, resultados = executarExpressao(tokens, memoria, resultados)
-        print(tokens)
-        codigoAssembly = gerarAssembly(tokens, codigoAssembly, contexto)
-    codigoAssembly = adicionar_rodape(codigoAssembly, contexto)    
-        
+        #print(tokens)
+        codigoAssembly = gerarAssembly(tokens, codigoAssembly)
+    
+    codigoAssembly = montar_codigo_final(codigoAssembly)        
     print(codigoAssembly)
+    
+    #with open("output/assembly_ultima_execucao.s", "w", encoding="utf-8") as f:
+    #    f.write(codigoAssembly)
+
 if __name__ == "__main__":
     main()

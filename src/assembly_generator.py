@@ -1,6 +1,3 @@
-#def gerarAssembly(tokens):
-#    ...
-    
 from parser import (
     token_EPar, token_DPar, token_Num, token_OP,
     token_Mem, token_Res, token_Invalido
@@ -147,7 +144,7 @@ def extrair_tokens_uteis(tokens):
     return uteis
 
 
-def gerarAssembly(tokens, codigoAssembly, contexto):
+def gerarAssembly(tokens, codigoAssembly):
     """
     Gera assembly para UMA linha e concatena em codigoAssembly.
     Sem classe.
