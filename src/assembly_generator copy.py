@@ -66,6 +66,35 @@ def adicionar_rodape(estado):
     codigo += "resultados: .space 800\n"
     return codigo
 
+def gerar_res(n, indice_linha):
+    """
+    Gera o assembly para (N RES),
+    onde N significa 'N linhas anteriores'.
+    """
+    linha_alvo = indice_linha - n
+
+    trecho = ""
+
+    if linha_alvo < 1:
+        trecho += f"    @ RES invalido: ({n} RES) na linha {indice_linha}\n"
+        trecho += "    ldr r0, =zero_const\n"
+        trecho += "    vldr d0, [r0]\n"
+        trecho += "    vstr d0, [r10]\n"
+        trecho += "    add r10, r10, #8\n"
+        return trecho
+
+    offset = (linha_alvo - 1) * 8
+
+    trecho += f"    @ RES -> carregar resultado da linha {linha_alvo}\n"
+    trecho += "    ldr r9, =resultados\n"
+    if offset != 0:
+        trecho += f"    add r9, r9, #{offset}\n"
+    trecho += "    vldr d0, [r9]\n"
+    trecho += "    vstr d0, [r10]\n"
+    trecho += "    add r10, r10, #8\n"
+
+    return trecho
+
 def gerar_push_numero(valor, estado):
     label = obter_ou_criar_constante(valor, estado)
 
@@ -173,6 +202,7 @@ def gerar_potencia(estado):
 
     trecho += f"{loop_label}:\n"
     trecho += "    cmp r1, #0\n"
+    trecho += "    blt erro_expoente_negativo\n"
     trecho += f"    beq {fim_label}\n"
     trecho += "    vmul.f64 d2, d2, d0\n"
     trecho += "    sub r1, r1, #1\n"
@@ -239,15 +269,25 @@ def gerarAssembly(tokens, estado):
 
     uteis = extrair_tokens_uteis(tokens)
 
-    uteis = extrair_tokens_uteis(tokens)
-
+    # Caso: (N RES)
+    if len(uteis) == 2 and uteis[0][0] == token_Num and uteis[1][0] == token_Res:
+        n = int(float(uteis[0][1]))
+        trecho += gerar_res(n, indice)
+        trecho += salvar_resultado_da_linha(indice)
+        trecho += "\n"
+        estado["codigo_texto"] += trecho
+        return
+    
     # (X)
     if len(uteis) == 1 and uteis[0][0] == token_Mem:
         nome_mem = uteis[0][1]
         trecho += gerar_load_mem(nome_mem, estado)
         trecho += salvar_resultado_da_linha(indice)
         estado["codigo_texto"] += trecho
+        trecho += "\n"
+        estado["codigo_texto"] += trecho
         return
+      
 
     # (5 X)
     if (
@@ -260,6 +300,7 @@ def gerarAssembly(tokens, estado):
         trecho += gerar_push_numero(valor, estado)
         trecho += gerar_store_mem(nome_mem, estado)
         trecho += salvar_resultado_da_linha(indice)
+        estado["codigo_texto"] += trecho
         estado["codigo_texto"] += trecho
         return
 
@@ -276,9 +317,6 @@ def gerarAssembly(tokens, estado):
 
         elif tipo == token_OP and lexema == "^":
             trecho += gerar_potencia(estado)
-
-        elif tipo == token_Res:
-            trecho += "    @ RES ainda nao implementado\n"
 
         elif tipo == token_Mem:
             trecho += gerar_load_mem(lexema, estado)
