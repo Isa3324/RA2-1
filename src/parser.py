@@ -5,7 +5,8 @@ token_OP = "OP"  # "+", "-", "*", "/", "//", "%" e "^"
 token_Mem = "MEM" # MEM
 token_Res = "RES" # RES
 token_Invalido = "INVALIDO" # nao é aceito
-
+token_Start = "START"
+token_End = "END"
 
 def estadoOperador(linha,posicao):
     if linha[posicao] == '/':
@@ -59,12 +60,16 @@ def estadoIdentificador(linha,posicao):
 
     if letras == "RES":
         return posicao, (token_Res, letras, inicio)
+    elif letras == "START":
+        return posicao, (token_Start, letras, inicio)
+    elif letras == "END":
+        return posicao, (token_End, letras, inicio)
 
     return posicao, (token_Mem, letras, inicio)
 
 
 
-def parseExpressao(linha, tokens):
+def parserExpressao(linha, tokens):
     #Percorre a linha e coloca em tokens
     posicao = 0
     

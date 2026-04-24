@@ -1,3 +1,4 @@
+# file_reader.py
 def ler_arquivo(nome_arquivo):
     try:
         with open(nome_arquivo, "r", encoding="utf-8") as arquivo:

@@ -1,4 +1,4 @@
-from parser import (
+from lexer import (
     token_EPar, token_DPar, token_Num, token_OP,
     token_Mem, token_Res, token_Invalido
 )

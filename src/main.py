@@ -1,11 +1,11 @@
+#main.py
 import sys
 from file_reader import ler_arquivo
-from parser import parseExpressao
+from parser import parserExpressao
 #from executor import executarExpressao
 from assembly_generator import (
-    inicializar_estado, 
-    gerarAssembly, 
-    montar_codigo_final
+    inicializar_contexto, 
+    gerarAssembly
 )
 
 
@@ -28,17 +28,17 @@ def main():
 
     #print("Arquivo lido com sucesso!")
     
-    codigoAssembly = inicializar_estado()
+    codigoAssembly = inicializar_contexto()
     
     
     for linha in linhas:
         tokens = []
-        tokens = parseExpressao(linha, tokens)
+        tokens = parserExpressao(linha, tokens)
         #resultados_novos, memoria, resultados = executarExpressao(tokens, memoria, resultados)
         #print(tokens)
         codigoAssembly = gerarAssembly(tokens, codigoAssembly)
     
-    codigoAssembly = montar_codigo_final(codigoAssembly)        
+    #codigoAssembly = montar_codigo_final(codigoAssembly)        
     print(codigoAssembly)
     
     #with open("output/assembly_ultima_execucao.s", "w", encoding="utf-8") as f:
